@@ -2,13 +2,16 @@ spring :
   application:
     name: blog-pjt-be
   datasource:
-    url: jdbc:postgresql://localhost:5432/skeletondb
+    url: jdbc:postgresql://localhost:5432/blog_pjt_db
     username: postgres
     password: root
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
 
 server:
   port: 8080
