@@ -1,5 +1,6 @@
-package com.bboddo.blog_pjt_be.example.entity;
+package com.bboddo.blog_pjt_be.user.entity;
 
+import com.bboddo.blog_pjt_be.common.entity.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class User extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
