@@ -1,12 +1,9 @@
 package com.bboddo.blog_pjt_be.post.controller;
 
-
 import com.bboddo.blog_pjt_be.post.dto.PostDTO;
-import com.bboddo.blog_pjt_be.post.entity.Post;
 import com.bboddo.blog_pjt_be.post.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +24,8 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public PostDTO getPost(@PathVariable Long postId){
-        PostDTO foundPost = postService.getPost(postId);
+    public PostDTO getPost(@PathVariable String postId){
+        PostDTO foundPost = postService.getPost(Long.parseLong(postId));
         return foundPost;
     }
 
@@ -39,8 +36,8 @@ public class PostController {
     }
 
     @PutMapping("/{postId}")
-    public Boolean updatePost(@PathVariable Long postId, @RequestBody PostDTO postDTO){
-        postDTO.setId(postId);
+    public Boolean updatePost(@PathVariable String postId, @RequestBody PostDTO postDTO){
+        postDTO.setId(Long.parseLong(postId));
         return postService.updatePost(postDTO);
     }
 
