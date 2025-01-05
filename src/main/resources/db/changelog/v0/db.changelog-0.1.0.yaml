@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: BIGINT
+                  type: INT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
@@ -29,15 +29,17 @@ databaseChangeLog:
               - column:
                   name: created_at
                   type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
               - column:
                   name: created_by
-                  type: BIGINT
+                  type: INT
               - column:
                   name: updated_at
                   type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
               - column:
                   name: updated_by
-                  type: BIGINT
+                  type: INT
 
   - changeSet:
       id: POSTS_001
@@ -69,15 +71,17 @@ databaseChangeLog:
               - column:
                   name: created_at
                   type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
               - column:
                   name: created_by
-                  type: BIGINT
+                  type: INT
               - column:
                   name: updated_at
                   type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
               - column:
                   name: updated_by
-                  type: BIGINT
+                  type: INT
   - changeSet:
       id: POSTS_002
       author: bboddo
@@ -88,3 +92,203 @@ databaseChangeLog:
             referencedTableName: users
             referencedColumnNames: id
             constraintName: fk_posts_users
+  - changeSet:
+      id: POSTS_003
+      author: bboddo
+      changes:
+        - createIndex:
+            tableName: posts
+            columns:
+              - column:
+                  name: user_id
+            indexName: idx_posts_user_id
+
+  - changeSet:
+      id: CATEGORIES_001
+      author: bboddo
+      changes:
+        - createTable:
+            tableName: category_parents
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sort
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: created_by
+                  type: INT
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_by
+                  type: INT
+
+  - changeSet:
+      id: CATEGORIES_002
+      author: bboddo
+      changes:
+        - createTable:
+            tableName: category_children
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sort
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parent_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: created_by
+                  type: INT
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_by
+                  type: INT
+  - changeSet:
+      id: CATEGORIES_003
+      author: bboddo
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: category_children
+            baseColumnNames: parent_id
+            referencedTableName: category_parents
+            referencedColumnNames: id
+            constraintName: fk_category_children_cateogry_parents
+
+  - changeSet:
+      id: CATEGORIES_004
+      author: bboddo
+      changes:
+        - createIndex:
+            tableName: category_children
+            columns:
+              - column:
+                  name: parent_id
+            indexName: idx_category_children_parent_id
+  - changeSet:
+      id: CATEGORIES_005
+      author: bboddo
+      changes:
+        - insert:
+            tableName: category_parents
+            columns:
+              - column:
+                  name: name
+                  value: 개발 공부
+              - column:
+                  name: sort
+                  value: 1
+              - column:
+                  name: created_by
+                  value: 1
+              - column:
+                  name: updated_by
+                  value: 1
+        - insert:
+            tableName: category_parents
+            columns:
+              - column:
+                  name: name
+                  value: 프로젝트
+              - column:
+                  name: sort
+                  value: 4
+              - column:
+                  name: created_by
+                  value: 1
+              - column:
+                  name: updated_by
+                  value: 1
+        - insert:
+            tableName: category_parents
+            columns:
+              - column:
+                  name: name
+                  value: 경제 일지
+              - column:
+                  name: sort
+                  value: 2
+              - column:
+                  name: created_by
+                  value: 1
+              - column:
+                  name: updated_by
+                  value: 1
+        - insert:
+            tableName: category_parents
+            columns:
+              - column:
+                  name: name
+                  value: 영어 일지
+              - column:
+                  name: sort
+                  value: 3
+              - column:
+                  name: created_by
+                  value: 1
+              - column:
+                  name: updated_by
+                  value: 1
+  - changeSet:
+      id: USERS_002
+      author: bboddo
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: system
+              - column:
+                  name: password
+                  value: system
+              - column:
+                  name: role
+                  value: system
+              - column:
+                  name: created_by
+                  value: 1
+              - column:
+                  name: updated_by
+                  value: 1
